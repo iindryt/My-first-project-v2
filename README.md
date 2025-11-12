@@ -1,4 +1,11 @@
 # Studentų pažymių valdymo programa 
+# v1.1
+Versijoje v1.1 atlikta šie pakeitimai:
+
+- Sukurta nauja repozicija iš ankstesnės užduoties, išlaikant visą git istoriją iki v1.0.
+- Programos realizacija pakeista iš `struct` į `class` tipo `Student` objektus, pritaikant visus atitinkamus kodo pakeitimus.
+- Palyginta abiejų realizacijų (`struct` vs `class`) sparta naudojant vieną fiksuotą konteinerį (`std::vector`) ir greičiausią dalijimo strategiją su failais dydžiu 100000 ir 1000000 įrašų.
+- Atlikta eksperimentinė analizė pagal kompiliatoriaus optimizacijos flag’us (`-O1`, `-O2`, `-O3`).
 
 # Studentų duomenų struktūrų palyginimas v1.1
 
@@ -42,8 +49,8 @@ Atliekant testus su **Strategija 1 – Du nauji konteineriai** (`struct` arba `c
 
 | Konteineris | Failas | Nuskaitymas (s) | Įrašymas (s) | Bendras (s) | Atmintis (B) |
 |-------------|--------|----------------|--------------|-------------|--------------|
-| vector      | studentai100000.txt  | 0.408979 | 0.199345 | 0.608324 | 14,378,544 |
-| vector      | studentai1000000.txt | 4.397648 | 2.120036 | 6.517684 | 109,186,400 |
+| vector      | studentai100000.txt  | 0.498979 | 0.179345 | 0.608324 | 14,378,544 |
+| vector      | studentai1000000.txt | 4.397648 | 2.120036 | 6.617684 | 109,186,400 |
 
 ---
 
