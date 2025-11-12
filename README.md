@@ -1,5 +1,28 @@
 # Studentų pažymių valdymo programa 
 
+# Studentų duomenų struktūrų palyginimas v1.1
+
+Šiame projekte lyginama dviejų realizacijų `Student` objektų veikimo sparta naudojant **Strategiją 1 -**, tiek su `struct`, tiek su `class` tipo objektais.
+
+## Strategija 1 – Du nauji konteineriai (su struct)
+
+| Konteineris | Failas | Nuskaitymas (s) | Įrašymas (s) | Bendras (s) | Atmintis (B) |
+|-------------|--------|----------------|--------------|-------------|--------------|
+| vector      | studentai100000.txt  | 0.954551 | 0.378320 | 1.785649 | 21,620,012 |
+| vector      | studentai1000000.txt | 6.804002 | 1.954002 | 10.600715 | 216,012,312 |
+
+## Strategija 1 – Du nauji konteineriai (su class)
+
+| Konteineris | Failas | Nuskaitymas (s) | Įrašymas (s) | Bendras (s) | Atmintis (B) |
+|-------------|--------|----------------|--------------|-------------|--------------|
+| vector      | studentai100000.txt  | 0.498979 | 0.179345 | 0.608324 | 14,378,544 |
+| vector      | studentai1000000.txt | 4.397648 | 2.120036 | 6.617684 | 109,186,400 |
+
+## Išvados
+- `class` realizacija rodo mažesnį atminties naudojimą ir dažnai trumpesnį bendrą veikimo laiką šioje strategijoje.  
+- `struct` realizacija užima daugiau atminties, tačiau nuskaitymo laikai šiek tiek didesni.
+
+
 ## Įdiegimo instrukcija
 # CMake įdiegimas Windows naudojant `.msi` paketą
 
