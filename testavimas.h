@@ -116,7 +116,7 @@ void testuotiKonteineri(const std::string& failoVardas, const std::string& pavad
             std::cout << "Pasirinktos STL strategijos vykdymo laikas: " << laikasStrategija << " s\n";
         }
         else {
-            // list atveju — nieko papildomai nebespausdinam
+            // list atveju   nieko papildomai nebespausdinam
         }
     }
     else {
