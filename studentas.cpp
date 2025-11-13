@@ -1,100 +1,107 @@
 #include "studentas.h"
-#include "funkcijos.h"
-#include <sstream>
 #include <algorithm>
-#include <iostream>
+#include <numeric>
+#include <iomanip>
 
-// ========================= Konstruktoriai =========================
+//konstruktoriai
+
 Studentas::Studentas()
-    : vardas_(""), pavarde_(""), egzaminas_(0), rezVid_(0), rezMed_(0) {
-    nd_.clear(); // „aktyvus“ veiksmas
+    : vard_(""), pav_(""), paz_(), egzas_(0), rezVid_(0.0f), rezMed_(0.0f) {
 }
 
-Studentas::Studentas(const std::string& vardas, const std::string& pavarde,
-    const std::vector<int>& nd, int egzaminas)
-    : vardas_(vardas), pavarde_(pavarde), nd_(nd), egzaminas_(egzaminas) {
-    float vid = static_cast<float>(VidurkisVector(nd_));
-    float med = static_cast<float>(MedianaVector(nd_));
-    rezVid_ = 0.4f * vid + 0.6f * egzaminas_;
-    rezMed_ = 0.4f * med + 0.6f * egzaminas_;
+Studentas::Studentas(const std::string& vard, const std::string& pav, int egz, const std::vector<int>& nd)
+    : vard_(vard), pav_(pav), paz_(nd), egzas_(egz), rezVid_(0.0f), rezMed_(0.0f) {
 }
 
 Studentas::Studentas(std::istream& is) {
-    readStudent(is);
+    skaitytiStudenta(is);
 }
 
-// ========================= Destruktorius =========================
+//destruktorius
+
 Studentas::~Studentas() {
-    // aktyvus destruktorius, atlaisvina resursus
-    nd_.clear();
-    vardas_.clear();
-    pavarde_.clear();
-    egzaminas_ = 0;
-    rezVid_ = rezMed_ = 0.0f;
-    // Debug galima ijungti, jei reikia
-    // std::cout << "Studentas sunaikintas\n";
+    vard_.clear();
+    pav_.clear();
+    paz_.clear();
+    egzas_ = 0;
+    rezVid_ = 0.0f;
+    rezMed_ = 0.0f;
 }
+//get'eriai
 
-// ========================= Get'eriai =========================
-std::string Studentas::vardas() const { return vardas_; }
-std::string Studentas::pavarde() const { return pavarde_; }
-std::vector<int> Studentas::nd() const { return nd_; }
-int Studentas::egzaminas() const { return egzaminas_; }
-float Studentas::galVid() const { return rezVid_; }
-float Studentas::galMed() const { return rezMed_; }
+std::string Studentas::vardas() const { return vard_; }
+std::string Studentas::pavarde() const { return pav_; }
+const std::vector<int>& Studentas::pazymiai() const { return paz_; }
+int Studentas::egzaminas() const { return egzas_; }
+float Studentas::getVid() const { return rezVid_; }
+float Studentas::getMed() const { return rezMed_; }
 
-// ========================= Member funkcijos =========================
-double Studentas::galBalas(double(*f)(const std::vector<int>&)) const {
-    double ndRez = f(nd_);
-    return 0.4 * ndRez + 0.6 * egzaminas_;
-}
 
-double Studentas::galBalasVidurkis() const { return galBalas(VidurkisVector); }
-double Studentas::galBalasMediana() const { return galBalas(MedianaVector); }
+std::istream& Studentas::skaitytiStudenta(std::istream& is) {
+    is >> vard_ >> pav_;
+    paz_.clear();
 
-std::istream& Studentas::readStudent(std::istream& is) {
-    std::string eilute;
-    if (!std::getline(is, eilute)) return is;
-
-    std::istringstream iss(eilute);
-    iss >> vardas_ >> pavarde_;
-
-    nd_.clear();
     int paz;
-    while (iss >> paz) {
-        if (paz < 1) paz = 1;
-        if (paz > 10) paz = 10;
-        nd_.push_back(paz);
+    
+    while (is >> paz) {
+        paz_.push_back(paz);
     }
 
-    if (!nd_.empty()) {
-        egzaminas_ = nd_.back();
-        nd_.pop_back();
+    
+    if (!paz_.empty()) {
+        egzas_ = paz_.back();
+        paz_.pop_back();
     }
     else {
-        egzaminas_ = 1;
+        egzas_ = 0;
     }
 
-    float vid = static_cast<float>(VidurkisVector(nd_));
-    float med = static_cast<float>(MedianaVector(nd_));
-    rezVid_ = 0.4f * vid + 0.6f * egzaminas_;
-    rezMed_ = 0.4f * med + 0.6f * egzaminas_;
+    
+    is.clear();
+
+    apskaiciuotiRezultatus();
     return is;
 }
 
-// ========================= Operatoriai =========================
-bool Studentas::operator<(const Studentas& kitas) const {
-    return pavarde_ < kitas.pavarde_;
+
+float Studentas::skaiciuotiVidurki() const {
+    if (paz_.empty()) return 0.0f;
+    float suma = std::accumulate(paz_.begin(), paz_.end(), 0);
+    float vid = suma / paz_.size();
+    return 0.4f * vid + 0.6f * egzas_;
 }
-// ========================= Comparatoriai =========================
-bool compare(const Studentas& a, const Studentas& b) {
+
+float Studentas::skaiciuotiMediana() const {
+    if (paz_.empty()) return 0.0f;
+
+    std::vector<int> kopija = paz_;
+    std::sort(kopija.begin(), kopija.end());
+    float med;
+
+    size_t n = kopija.size();
+    if (n % 2 == 0)
+        med = (kopija[n / 2 - 1] + kopija[n / 2]) / 2.0f;
+    else
+        med = kopija[n / 2];
+
+    return 0.4f * med + 0.6f * egzas_;
+}
+
+void Studentas::apskaiciuotiRezultatus() {
+    rezVid_ = skaiciuotiVidurki();
+    rezMed_ = skaiciuotiMediana();
+}
+
+
+
+bool pagalVarda(const Studentas& a, const Studentas& b) {
     return a.vardas() < b.vardas();
 }
 
-bool comparePagalPavarde(const Studentas& a, const Studentas& b) {
+bool pagalPavarde(const Studentas& a, const Studentas& b) {
     return a.pavarde() < b.pavarde();
 }
 
-bool comparePagalEgza(const Studentas& a, const Studentas& b) {
-    return a.egzaminas() < b.egzaminas();
+bool pagalGalutini(const Studentas& a, const Studentas& b) {
+    return a.getVid() < b.getVid();
 }
