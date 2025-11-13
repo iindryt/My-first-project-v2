@@ -1,53 +1,45 @@
-#ifndef STUDENTAS_H
-#define STUDENTAS_H
+#pragma once
 
 #include <string>
 #include <vector>
 #include <iostream>
 
-// Funkcijos, kurios apskaičiuoja vidurkį ar medianą
-double VidurkisVector(const std::vector<int>& paz);
-double MedianaVector(const std::vector<int>& paz);
-
 class Studentas {
 private:
-    std::string vardas_;
-    std::string pavarde_;
-    std::vector<int> nd_;
-    int egzaminas_;
+    std::string vard_;
+    std::string pav_;
+    std::vector<int> paz_;
+    int egzas_;
     float rezVid_;
     float rezMed_;
 
 public:
-    // Konstruktoriai
-    Studentas();                        // default konstruktorius
-    Studentas(const std::string& vardas, const std::string& pavarde,
-        const std::vector<int>& nd, int egzaminas); // parametrinis
-    Studentas(std::istream& is);        // srauto konstruktorius
+    //konstruktorius
+    Studentas();
+    Studentas(const std::string& vard, const std::string& pav, int egz, const std::vector<int>& nd);
+    explicit Studentas(std::istream& is);
 
-    // Destruktorius (pilnai realizuotas)
+    //destruktorius
     ~Studentas();
 
-    // Get'eriai
+    
+    // get'eriai
+    
     std::string vardas() const;
     std::string pavarde() const;
-    std::vector<int> nd() const;
+    const std::vector<int>& pazymiai() const;
     int egzaminas() const;
-    float galVid() const;
-    float galMed() const;
+    float getVid() const;
+    float getMed() const;
 
-    // Member funkcijos
-    std::istream& readStudent(std::istream& is);
-    double galBalas(double(*f)(const std::vector<int>&)) const;
-    double galBalasVidurkis() const;
-    double galBalasMediana() const;
+    std::istream& skaitytiStudenta(std::istream& is);
 
-    // Operatoriai
-    bool operator<(const Studentas& kitas) const;
+   
+    float skaiciuotiVidurki() const;
+    float skaiciuotiMediana() const;
+    void apskaiciuotiRezultatus();
 };
-// Comparatoriai kaip funkcijos
-bool compare(const Studentas& a, const Studentas& b);               
-bool comparePagalPavarde(const Studentas& a, const Studentas& b);  
-bool comparePagalEgza(const Studentas& a, const Studentas& b);
 
-#endif // STUDENTAS_H
+bool pagalVarda(const Studentas& a, const Studentas& b);
+bool pagalPavarde(const Studentas& a, const Studentas& b);
+bool pagalGalutini(const Studentas& a, const Studentas& b);
