@@ -12,41 +12,44 @@
 #include "laikmatis.h"
 #include "funkcijos.h"
 
-// ===============================
 // Failo generavimas
 void generuotiFaila(int kiekis, const std::string& failoVardas, int ndKiekis = 5);
 
-// ===============================
 // Paprasta funkcija su std::vector
-// ===============================
 std::vector<Studentas> nuskaitytiIsFailo(const std::string& failoVardas);
 
-
-// ===============================
-// Templatinė funkcija konteineriams
-// (vector arba list)
-// ===============================
+// Sablonine funkcija konteineriams (vector arba list)
 template <typename Container>
 Container nuskaitytiIsFailoTemplate(const std::string& failoVardas, bool spausdinti = true) {
     Laikmatis tNuskaitymui;
     Container studentai;
 
     std::ifstream in(failoVardas);
-    if (!in) { std::cerr << "Nepavyko atidaryti failo: " << failoVardas << "\n"; return studentai; }
-
-    std::string eilute;
-    std::getline(in, eilute); // praleidžiame antraštę
-
-    while (std::getline(in, eilute)) { // viena eilutė
-        if (eilute.empty()) continue;
-        std::istringstream ss(eilute);
-        Studentas s(ss);
-        if (!s.vardas().empty()) studentai.push_back(s);
+    if (!in) {
+        std::cerr << "Nepavyko atidaryti failo: " << failoVardas << "\n";
+        return studentai;
     }
 
-    if (spausdinti) std::cout << "Failas nuskaitytas per " << tNuskaitymui.praejes_laikas() << " s.\n";
+    std::string eilute;
+    std::getline(in, eilute); 
+
+    while (std::getline(in, eilute)) {
+        if (eilute.empty()) continue;
+
+        std::istringstream iss(eilute);
+
+        Studentas s;
+        s.skaitytiStudenta(iss);  // panaudojame vienoda skaitymo funkcija
+        studentai.push_back(s);
+    }
+
+    if (spausdinti) {
+        std::cout << "Failas nuskaitytas per " << tNuskaitymui.praejes_laikas() << " s.\n";
+    }
+
     return studentai;
 }
 
 
 #endif // DUOMENYS_H
+
