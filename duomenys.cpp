@@ -5,35 +5,59 @@
 #include <iostream>
 #include <iomanip>
 
-// ===============================
-// Nuskaitymas i vector<Studentas>
-// ===============================
+// ============================
+//    NUSKAITYMAS IS FAILO
+// ============================
 std::vector<Studentas> nuskaitytiIsFailo(const std::string& failoVardas) {
     std::vector<Studentas> studentai;
-    Laikmatis t;
-
     std::ifstream in(failoVardas);
+
     if (!in) {
         std::cerr << "Klaida: nepavyko atidaryti failo: " << failoVardas << std::endl;
         return studentai;
     }
 
     std::string eilute;
-    std::getline(in, eilute); // praleid?iame antra?t?
+    std::getline(in, eilute); 
 
-    while (in) {
-        Studentas s(in);  // Naudojame Studentas::readStudent() per konstruktori?
-        if (!s.vardas().empty() && !s.pavarde().empty())
-            studentai.push_back(s);
+    while (std::getline(in, eilute)) {
+        if (eilute.empty()) continue;
+
+        std::istringstream ss(eilute);
+        std::string vard, pav;
+        ss >> vard >> pav;
+
+        std::vector<int> laikPaz;
+        int paz;
+
+        while (ss >> paz) {
+            laikPaz.push_back(paz);
+        }
+
+        if (laikPaz.size() < 2) {
+            std::cerr << "Klaida: per ma?ai pa?ymi? eilut?je: " << eilute << std::endl;
+            continue;
+        }
+
+        int egzas = laikPaz.back();
+        laikPaz.pop_back();
+
+        // Sukuriam studenta per konstruktr
+        Studentas s(vard, pav, egzas, laikPaz);
+
+        
+        s.apskaiciuotiRezultatus();
+
+        //itraukkam i srauta
+        studentai.push_back(s);
     }
 
-    std::cout << "Failas nuskaitytas per " << t.praejes_laikas() << " s.\n";
     return studentai;
 }
 
-// ===============================
-// Failo generavimas
-// ===============================
+// ============================
+//    FAILO GENERAVIMAS
+// ============================
 void generuotiFaila(int kiekis, const std::string& failoVardas, int ndKiekis) {
     std::ofstream out(failoVardas);
     if (!out) {
@@ -41,12 +65,14 @@ void generuotiFaila(int kiekis, const std::string& failoVardas, int ndKiekis) {
         return;
     }
 
+    // Antraste
     out << "Vardas Pavarde";
     for (int i = 1; i <= ndKiekis; i++) {
         out << " ND" << i;
     }
     out << " Egzaminas\n";
 
+    // Duomenu generavimas
     for (int i = 1; i <= kiekis; ++i) {
         out << "Vardas" << i << " Pavarde" << i;
         for (int j = 0; j < ndKiekis; ++j) {
@@ -56,5 +82,5 @@ void generuotiFaila(int kiekis, const std::string& failoVardas, int ndKiekis) {
     }
 
     out.close();
-    std::cout << "Failas '" << failoVardas << "' sukurtas su " << kiekis << " irasu.\n";
+    std::cout << "Failas '" << failoVardas << "' sukurtas su " << kiekis << " ?ra??." << std::endl;
 }
