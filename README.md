@@ -60,6 +60,7 @@ else if (veiksmas == 7) {
 
     std::cout << "\nDestruktorius bus kvieciamas pabaigus funkcija.\n";
 }
+ ```
      
      | Veiksmas                       | Operatorius / metodas                           | Klasės dalis / paskirtis                                 |
 | ------------------------------ | ----------------------------------------------- | -------------------------------------------------------- |
