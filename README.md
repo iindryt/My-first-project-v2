@@ -41,6 +41,9 @@
      std::cin >> studentas;
      std::cout << studentas;
      ```
+     Asmeniui leidžiama pasirinkti, kad būtų atliekamas testavimas (7)
+     <img width="518" height="91" alt="image" src="https://github.com/user-attachments/assets/d2584195-95b4-4a62-b8f6-8d85a8e6703e" />
+
 
 # v1.1
 Versijoje v1.1 atlikta šie pakeitimai:
