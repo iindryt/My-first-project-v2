@@ -41,11 +41,12 @@
      std::cin >> studentas;
      std::cout << studentas;
      ```
+     
 ## V1.2 versijoje specialiai sukurtas meniu veiksmas 7 leidžia pamatyti, kaip veikia **Rule of Three** ir perdengti operatoriai:
 
 
      
-     | Veiksmas                       | Operatorius / metodas                           | Klasės dalis / paskirtis                                 |
+| Veiksmas                       | Operatorius / metodas                           | Klasės dalis / paskirtis                                 |
 | ------------------------------ | ----------------------------------------------- | -------------------------------------------------------- |
 | `std::cin >> original;`        | `operator>>`                                    | Įvestis – leidžia įvesti studento duomenis iš `std::cin` |
 | `std::cout << original;`       | `operator<<`                                    | Išvestis – spausdina studento duomenis į ekraną          |
@@ -53,10 +54,10 @@
 | `priskyrimas = original;`      | kopijavimo priskyrimo operatorius (`operator=`) | Priskiria `original` duomenis objektui `priskyrimas`     |
 | blokas baigiasi                | destruktorius                                   | Automatiškai kviečiamas, išvalo ir sunaikina objektus    |
 
-     Asmeniui leidžiama pasirinkti, kad būtų atliekamas testavimas (7)
-     <img width="518" height="91" alt="image" src="https://github.com/user-attachments/assets/d2584195-95b4-4a62-b8f6-8d85a8e6703e" />
-     Suvedus duomenis, atitinkamai įvykdoma ir parodoma, kad veikia tiek Rule of Three, tiek ir operatoriai:
-     <img width="862" height="312" alt="image" src="https://github.com/user-attachments/assets/4b4455a0-b647-4b71-8521-f6c37aeda850" />
+Asmeniui leidžiama pasirinkti, kad būtų atliekamas testavimas (7)
+<img width="518" height="91" alt="image" src="https://github.com/user-attachments/assets/d2584195-95b4-4a62-b8f6-8d85a8e6703e" />
+Suvedus duomenis, atitinkamai įvykdoma ir parodoma, kad veikia tiek Rule of Three, tiek ir operatoriai:
+<img width="862" height="312" alt="image" src="https://github.com/user-attachments/assets/4b4455a0-b647-4b71-8521-f6c37aeda850" />
 
 
 
