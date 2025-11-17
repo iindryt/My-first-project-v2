@@ -42,7 +42,10 @@
      std::cout << studentas;
      ```
      Asmeniui leidžiama pasirinkti, kad būtų atliekamas testavimas (7)
-     <img width="518" height="91" alt="image" src="https://github.com/user-attachments/assets/d2584195-95b4-4a62-b8f6-8d85a8e6703e" />
+     (<img width="518" height="91" alt="image" src="https://github.com/user-attachments/assets/d2584195-95b4-4a62-b8f6-8d85a8e6703e" />)
+     Suvedus duomenis, atitinkamai įvykdoma ir parodoma, kad veikia tiek Rule of Three, tiek ir operatoriai:
+     (<img width="862" height="312" alt="image" src="https://github.com/user-attachments/assets/4b4455a0-b647-4b71-8521-f6c37aeda850" />)
+
 
 
 # v1.1
