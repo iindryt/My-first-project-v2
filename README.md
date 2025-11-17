@@ -1,4 +1,47 @@
 # Studentų pažymių valdymo programa 
+# v1.2
+
+Ši programa realizuoja `Studentas` klasę su visais būtinais metodais ir operatoriais pagal **Rule of Three** taisyklę. Projekto v1.2 tikslas – demonstruoti, kaip dirbti su klasėmis, operatoriais.
+## v1.2 versijoje atlikta
+
+1. **Rule of Three implementacija**  
+   - Realizuotas kopijavimo konstruktorius:
+     ```cpp
+     Studentas::Studentas(const Studentas& kitas);
+     ```
+   - Realizuotas kopijavimo priskyrimo operatorius:
+     ```cpp
+     Studentas& Studentas::operator=(const Studentas& kitas);
+     ```
+   - Realizuotas destruktorius:
+     ```cpp
+     Studentas::~Studentas();
+     ```
+   - Demonstracija `main()` programoje:
+     ```cpp
+     Studentas original;
+     std::cin >> original;
+     Studentas kopija = original;      // kopijavimo konstruktorius
+     Studentas priskyrimas;
+     priskyrimas = original;           // operator=
+     ```
+     Destruktorius kviečiamas automatiškai bloko pabaigoje.
+
+2. **Įvesties ir išvesties operatorių perdengimas**
+   - Operatorius `>>` įvesties skaitymui:
+     ```cpp
+     std::istream& operator>>(std::istream& is, Studentas& s);
+     ```
+   - Operatorius `<<` duomenų išvedimui:
+     ```cpp
+     std::ostream& operator<<(std::ostream& os, const Studentas& s);
+     ```
+   - Šie operatoriai leidžia:
+     ```cpp
+     std::cin >> studentas;
+     std::cout << studentas;
+     ```
+
 # v1.1
 Versijoje v1.1 atlikta šie pakeitimai:
 
