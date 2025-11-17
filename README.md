@@ -43,7 +43,6 @@
      ```
 ## V1.2 versijoje specialiai sukurtas meniu veiksmas 7 leidžia pamatyti, kaip veikia **Rule of Three** ir perdengti operatoriai:
 
-```cpp
 else if (veiksmas == 7) {
     Studentas original;
     std::cout << "Iveskite studenta naudojant operator>> (pvz.: Jonas Jonaitis 8 9 10 7):\n";
@@ -60,7 +59,6 @@ else if (veiksmas == 7) {
 
     std::cout << "\nDestruktorius bus kvieciamas pabaigus funkcija.\n";
 }
- ```
      
      | Veiksmas                       | Operatorius / metodas                           | Klasės dalis / paskirtis                                 |
 | ------------------------------ | ----------------------------------------------- | -------------------------------------------------------- |
