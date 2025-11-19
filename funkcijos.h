@@ -17,6 +17,7 @@ float Mediana(std::list<int> pazymiai);
 float Vidurkis(const std::vector<int>& pazymiai);
 float Vidurkis(const std::list<int>& pazymiai);
 int ivestiEgzamina();
+Studentas generuotiStudentaAutomatiskai();
 Studentas ivesk();
 
 enum class Balas { Vidurkis, Mediana };
@@ -207,217 +208,219 @@ void irasytiIFailus(const Container& kietiakiai,
 
 // ==========================================================
 // Templatine funkcija spausdinimui ir rusiavimui
-// ==========================================================
 template <typename Container>
 void spausdintiRezultatusIrRusiavima(Container& Grupe) {
-    using std::cout;
-    using std::endl;
-    using std::left;
-    using std::setw;
-    using std::fixed;
-    using std::setprecision;
-    using std::ofstream;
-    using std::string;
+    using namespace std;
 
     if (Grupe.empty()) {
-        cout << "Studentu sarasas tuscias." << endl;
+        cout << "Studentu sarasas tuscias.\n";
         return;
     }
 
-    // --- Rikiavimas pagal varda kaip default ---
-    if constexpr (std::is_same_v<Container, std::vector<Studentas>>)
-        std::sort(Grupe.begin(), Grupe.end(), pagalVarda);
-    else if constexpr (std::is_same_v<Container, std::list<Studentas>>)
+    // ================================
+    // RIKIUOJAME PAGAL VARDA (default)
+    // ================================
+    Laikmatis laikRusiavimui;
+
+    if constexpr (is_same_v<Container, vector<Studentas>>)
+        sort(Grupe.begin(), Grupe.end(), pagalVarda);
+    else
         Grupe.sort(pagalVarda);
 
-
-    Laikmatis laikRusiavimui;
     double rusiavimoLaikas = laikRusiavimui.praejes_laikas();
 
-    // --- Galutinio balo skaiciavimo pasirinkimas ---
-    int pasirinkimas = 0;
-    while (pasirinkimas < 1 || pasirinkimas > 3) {
-        cout << "\nPasirinkite galutinio balo skaiciavimo metoda:\n";
-        cout << "1 - Vidurkis\n2 - Mediana\n3 - Abu (vidurkis ir mediana)\n";
-        cout << "Jusu pasirinkimas: ";
-        std::cin >> pasirinkimas;
-        if (pasirinkimas < 1 || pasirinkimas > 3)
-            cout << "Neteisingas pasirinkimas, bandykite dar karta.\n";
+
+    // ================================
+    // PASIRINKIMAS – EKRANAS AR FAILAS
+    // ================================
+    int pasirinkimasRezultatu = 0;
+    while (pasirinkimasRezultatu < 1 || pasirinkimasRezultatu > 2) {
+        cout << "\nKur norite issaugoti rezultatus?\n"
+            << "1 - I ekrana\n2 - I faila 'rezultatai.txt'\n"
+            << "Jusu pasirinkimas: ";
+        cin >> pasirinkimasRezultatu;
+        if (!cin) { cin.clear(); cin.ignore(1000, '\n'); }
     }
 
+    // ================================
+    // PASIRINKIMAS – VIDURKIS / MEDIANA
+    // ================================
+    int pasirinkimasBalo = 0;
+    while (pasirinkimasBalo < 1 || pasirinkimasBalo > 3) {
+        cout << "\nPasirinkite galutinio balo skaiciavimo metoda:\n"
+            << "1 - Vidurkis\n2 - Mediana\n3 - Abu\n"
+            << "Jusu pasirinkimas: ";
+        cin >> pasirinkimasBalo;
+        if (!cin) { cin.clear(); cin.ignore(1000, '\n'); }
+    }
+
+    // ================================
+    // I?VEDAME REZULTATUS
+    // ================================
     Laikmatis laikIrasymui;
-    ofstream fout("rezultatai.txt");
-    if (!fout) { cout << "Klaida: nepavyko sukurti rezultatu failo." << endl; return; }
 
-    if (pasirinkimas == 1) {
-        fout << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << "Galutinis (Vid.)" << endl;
-        fout << string(45, '-') << endl;
-        for (const auto& s : Grupe)
-            fout << left << setw(15) << s.pavarde() << setw(15) << s.vardas()
-            << fixed << setprecision(2) << s.getVid() << endl;
-    }
-    else if (pasirinkimas == 2) {
-        fout << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << "Galutinis (Med.)" << endl;
-        fout << string(45, '-') << endl;
-        for (const auto& s : Grupe)
-            fout << left << setw(15) << s.pavarde() << setw(15) << s.vardas()
-            << fixed << setprecision(2) << s.getMed() << endl;
-    }
-    else {
-        fout << left << setw(15) << "Pavarde" << setw(15) << "Vardas"
-            << setw(20) << "Galutinis (Vid.)" << setw(20) << "Galutinis (Med.)" << endl;
-        fout << string(70, '-') << endl;
-        for (const auto& s : Grupe)
-            fout << left << setw(15) << s.pavarde() << setw(15) << s.vardas()
-            << setw(20) << fixed << setprecision(2) << s.getVid()
-            << setw(20) << fixed << setprecision(2) << s.getMed() << endl;
-    }
-    fout.close();
-
-    cout << "Rezultatai issaugoti faile 'rezultatai.txt'\n";
-    cout << "Rusiavimas truko: " << rusiavimoLaikas << " sek.\n";
-    cout << "Isvedimas i 'rezultatai.txt' truko: " << laikIrasymui.praejes_laikas() << " sek.\n";
-
-    // --- Strategijos pasirinkimas ---
-    int strategija = 0;
-    while (strategija < 1 || strategija > 3) {
-        cout << "\nPasirinkite strategija (1, 2 arba 3, 3 - palyginti laikus): ";
-        std::cin >> strategija;
-        if (strategija < 1 || strategija > 3)
-            cout << "Neteisingas pasirinkimas, bandykite dar karta.\n";
-    }
-
-    // --- Pagal ka skirstyti studentus ---
-    int baloPasirinkimas = 0;
-    while (baloPasirinkimas < 1 || baloPasirinkimas > 2) {
-        cout << "Pasirinkite pagal ka skirstyti studentus:\n";
-        cout << "1 - Vidurkis\n2 - Mediana\n";
-        cout << "Jusu pasirinkimas: ";
-        std::cin >> baloPasirinkimas;
-        if (baloPasirinkimas < 1 || baloPasirinkimas > 2)
-            cout << "Neteisingas pasirinkimas, bandykite dar karta.\n";
-    }
-
-    Container kietiakiai, vargsiukai;
-    double laikas1 = 0, laikas2 = 0;
-    Balas pagal = (baloPasirinkimas == 1) ? Balas::Vidurkis : Balas::Mediana;
-
-    if (strategija == 1) {
-        Laikmatis t;
-        strategija1(Grupe, kietiakiai, vargsiukai, pagal);
-        laikas1 = t.praejes_laikas();
-        cout << "Strategija 1 truko: " << laikas1 << " s\n";
-    }
-    else if (strategija == 2) {
-        Laikmatis t;
-        strategija2(Grupe, kietiakiai, vargsiukai, pagal);
-        laikas2 = t.praejes_laikas();
-        cout << "Strategija 2 truko: " << laikas2 << " s\n";
-    }
-    else {
-        Container k1, v1, k2, v2;
-        Laikmatis t1, t2;
-        strategija1(Grupe, k1, v1, pagal); laikas1 = t1.praejes_laikas();
-        strategija2(Grupe, k2, v2, pagal); laikas2 = t2.praejes_laikas();
-
-        cout << "Strategija 1 truko: " << laikas1 << " s\n";
-        cout << "Strategija 2 truko: " << laikas2 << " s\n";
-
-        if (laikas1 <= laikas2) { kietiakiai = k1; vargsiukai = v1; cout << "Pasirinkta strategija 1 (greitesne)\n"; }
-        else { kietiakiai = k2; vargsiukai = v2; cout << "Pasirinkta strategija 2 (greitesne)\n"; }
-    }
-
-    // --- Rikiavimas kietiakiai / vargsiukai ---
-    int rikiavimoPasirinkimas = 0;
-    while (true) {
-        std::cout << "\nKaip norite, kad butu surikiuoti 'kietiakiai' ir 'vargsiukai'?\n";
-        std::cout << "1 - Pagal varda\n2 - Pagal pavarde\n3 - Pagal galutini bala\n";
-        std::cout << "Jusu pasirinkimas: ";
-        std::cin >> rikiavimoPasirinkimas;
-
-        if (!std::cin) {
-            std::cin.clear();
-            std::cin.ignore(1000, '\n');
-            std::cout << "Klaida: iveskite 1, 2 arba 3.\n";
-            continue;
+    auto spausdintiRez = [&](auto& out) {
+        if (pasirinkimasBalo == 1) {
+            out << left << setw(15) << "Pavarde" << setw(15)
+                << "Vardas" << "Galutinis (Vid.)\n"
+                << string(45, '-') << "\n";
+            for (const auto& s : Grupe)
+                out << left << setw(15) << s.pavarde()
+                << setw(15) << s.vardas()
+                << fixed << setprecision(2) << s.getVid() << "\n";
         }
-
-        if (rikiavimoPasirinkimas < 1 || rikiavimoPasirinkimas > 3) {
-            std::cout << "Klaida: iveskite 1, 2 arba 3.\n";
-            continue;
+        else if (pasirinkimasBalo == 2) {
+            out << left << setw(15) << "Pavarde" << setw(15)
+                << "Vardas" << "Galutinis (Med.)\n"
+                << string(45, '-') << "\n";
+            for (const auto& s : Grupe)
+                out << left << setw(15) << s.pavarde()
+                << setw(15) << s.vardas()
+                << fixed << setprecision(2) << s.getMed() << "\n";
         }
-
-        break;
-    }
-
-    auto rikiuotiPagal = [&](Container& sarasas) {
-        switch (rikiavimoPasirinkimas) {
-        case 1: // pagal varda
-            if constexpr (std::is_same_v<Container, std::vector<Studentas>>)
-                std::sort(sarasas.begin(), sarasas.end(), pagalVarda);
-            else
-                sarasas.sort(pagalVarda);
-            break;
-        case 2: // pagal pavarde
-            if constexpr (std::is_same_v<Container, std::vector<Studentas>>)
-                std::sort(sarasas.begin(), sarasas.end(), pagalPavarde);
-            else
-                sarasas.sort(pagalPavarde);
-            break;
-        case 3: // pagal galutini bala
-            if constexpr (std::is_same_v<Container, std::vector<Studentas>>)
-                std::sort(sarasas.begin(), sarasas.end(), pagalGalutini);
-            else
-                sarasas.sort(pagalGalutini);
-            break;
-        default:
-            cout << "Neteisingas pasirinkimas, paliekama be papildomo rikiavimo.\n";
+        else {
+            out << left << setw(15) << "Pavarde" << setw(15)
+                << "Vardas" << setw(20) << "Galutinis (Vid.)"
+                << setw(20) << "Galutinis (Med.)\n"
+                << string(70, '-') << "\n";
+            for (const auto& s : Grupe)
+                out << left << setw(15) << s.pavarde()
+                << setw(15) << s.vardas()
+                << setw(20) << fixed << setprecision(2) << s.getVid()
+                << setw(20) << fixed << setprecision(2) << s.getMed() << "\n";
         }
         };
 
+    if (pasirinkimasRezultatu == 2) {
+        ofstream out("rezultatai.txt");
+        spausdintiRez(out);
+    }
+    else {
+        spausdintiRez(cout);
+    }
+
+    cout << "Rusiavimas truko: " << fixed << setprecision(7)
+        << rusiavimoLaikas << " sek.\n";
+    cout << "Isvedimas truko: " << fixed << setprecision(7)
+        << laikIrasymui.praejes_laikas() << " sek.\n";
+
+
+    // ============================================
+    // PASIRINKIMAS – PAGAL KA SKIRSTYTI (VID/MED)
+    // ============================================
+    int baloPasirinkimas = 0;
+    while (baloPasirinkimas < 1 || baloPasirinkimas > 2) {
+        cout << "\nPasirinkite pagal ka skirstyti studentus:\n"
+            << "1 - Vidurkis\n2 - Mediana\n"
+            << "Jusu pasirinkimas: ";
+        cin >> baloPasirinkimas;
+        if (!cin) { cin.clear(); cin.ignore(1000, '\n'); }
+    }
+
+
+    // ==========================
+    // PAPRASTAS SKIRSTYMAS
+    // ==========================
+    Container kietiakiai, vargsiukai;
+
+    Laikmatis laikSkirstymui;
+
+    for (const auto& s : Grupe) {
+        double balas = (baloPasirinkimas == 1) ? s.getVid() : s.getMed();
+        if (balas >= 5.0)
+            kietiakiai.push_back(s);
+        else
+            vargsiukai.push_back(s);
+    }
+
+    double skirstymoLaikas = laikSkirstymui.praejes_laikas();
+
+
+    // ==========================
+    // PASIRINKIMAS – RIKIAVIMAS
+    // ==========================
+    int rikiavimoPasirinkimas = 0;
+    while (true) {
+        cout << "\nKaip norite rikiuoti 'kietiakiai' ir 'vargsiukai'?\n"
+            << "1 - Pagal varda\n2 - Pagal pavarde\n3 - Pagal galutini bala\n"
+            << "Jusu pasirinkimas: ";
+        cin >> rikiavimoPasirinkimas;
+
+        if (!cin) { cin.clear(); cin.ignore(1000, '\n'); continue; }
+        if (rikiavimoPasirinkimas >= 1 && rikiavimoPasirinkimas <= 3) break;
+
+        cout << "Klaida: iveskite 1, 2 arba 3.\n";
+    }
+
+    auto rikiuotiPagal = [&](Container& sar) {
+        switch (rikiavimoPasirinkimas) {
+        case 1:
+            if constexpr (is_same_v<Container, vector<Studentas>>)
+                sort(sar.begin(), sar.end(), pagalVarda);
+            else sar.sort(pagalVarda);
+            break;
+        case 2:
+            if constexpr (is_same_v<Container, vector<Studentas>>)
+                sort(sar.begin(), sar.end(), pagalPavarde);
+            else sar.sort(pagalPavarde);
+            break;
+        case 3:
+            if constexpr (is_same_v<Container, vector<Studentas>>)
+                sort(sar.begin(), sar.end(), pagalGalutini);
+            else sar.sort(pagalGalutini);
+            break;
+        }
+        };
 
     rikiuotiPagal(kietiakiai);
     rikiuotiPagal(vargsiukai);
 
-    // --- Isvedimas i failus ---
+
+    // ==========================
+    // ISVEDIMAS I FAILUS
+    // ==========================
     Laikmatis laikIrasymui2;
-    ofstream outKiet("kietiakiai.txt");
-    ofstream outVarg("vargsiukai.txt");
 
-    if (!outKiet || !outVarg) {
-        cout << "Klaida: nepavyko sukurti failu." << endl;
-        return;
-    }
+    ofstream outK("kietiakiai.txt");
+    ofstream outV("vargsiukai.txt");
 
-    auto spausdinti = [](ofstream& fout, const Container& sarasas, bool pagalVidurki) {
-        string antraste = pagalVidurki ? "Galutinis (Vid.)" : "Galutinis (Med.)";
-        fout << left << setw(15) << "Pavarde" << setw(15) << "Vardas" << antraste << endl;
-        fout << string(45, '-') << endl;
+    auto spausdintiFailui = [&](ofstream& out, const Container& sar) {
+        string antraste = (baloPasirinkimas == 1)
+            ? "Galutinis (Vid.)" : "Galutinis (Med.)";
 
-        for (const auto& s : sarasas) {
-            float balas = pagalVidurki ? s.getVid() : s.getMed();
-            fout << left << setw(15) << s.pavarde() << setw(15) << s.vardas()
-                << fixed << setprecision(2) << balas << endl;
+        out << left << setw(15) << "Pavarde" << setw(15)
+            << "Vardas" << antraste << "\n"
+            << string(45, '-') << "\n";
+
+        for (const auto& s : sar) {
+            double balas = (baloPasirinkimas == 1) ? s.getVid() : s.getMed();
+            out << left << setw(15) << s.pavarde()
+                << setw(15) << s.vardas()
+                << fixed << setprecision(2) << balas << "\n";
         }
         };
 
-    bool pagalVidurki = (baloPasirinkimas == 1);
-    spausdinti(outKiet, kietiakiai, pagalVidurki);
-    spausdinti(outVarg, vargsiukai, pagalVidurki);
+    spausdintiFailui(outK, kietiakiai);
+    spausdintiFailui(outV, vargsiukai);
 
-    outKiet.close();
-    outVarg.close();
-
-    cout << "Studentai surusiuoti ir issaugoti:\n";
+    cout << "\nStudentai surusiuoti ir issaugoti:\n";
     cout << " - kietiakiai.txt: " << kietiakiai.size() << " studentu\n";
     cout << " - vargsiukai.txt: " << vargsiukai.size() << " studentu\n";
-    cout << "Rusiavimas i kietiakus/vargsiukus truko: " << laikRusiavimui.praejes_laikas() << " sek.\n";
-    cout << "Isvedimas i failus truko: " << laikIrasymui2.praejes_laikas() << " sek.\n";
+    cout << "Skirstymas i grupes truko: "
+        << fixed << setprecision(7) << skirstymoLaikas << " sek.\n";
+    cout << "Isvedimas i failus truko: "
+        << fixed << setprecision(7) << laikIrasymui2.praejes_laikas() << " sek.\n";
 }
 
 
 
 
+
+
+
+
+
 #endif // FUNKCIJOS_H
+
 
 
