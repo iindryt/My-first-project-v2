@@ -34,8 +34,10 @@ Studentas& Studentas::operator=(const Studentas& kitas) {
     return *this;
 }
 
-// Destruktorius su clear()
 Studentas::~Studentas() {
+    //std::cout << "Destruktorius: studentas sunaikintas: "
+        //<< vard_ << " " << pav_ << std::endl;
+
     vard_.clear();
     pav_.clear();
     paz_.clear();
@@ -43,6 +45,7 @@ Studentas::~Studentas() {
     rezVid_ = 0.0f;
     rezMed_ = 0.0f;
 }
+
 
 // Get'eriai
 std::string Studentas::vardas() const { return vard_; }
@@ -52,14 +55,37 @@ int Studentas::egzaminas() const { return egzas_; }
 float Studentas::getVid() const { return rezVid_; }
 float Studentas::getMed() const { return rezMed_; }
 
-// Skaitymas i? srauto
 std::istream& Studentas::skaitytiStudenta(std::istream& is) {
     is >> vard_ >> pav_;
     paz_.clear();
     int paz;
-    while (is >> paz) {
-        paz_.push_back(paz);
-        if (is.peek() == '\n' || is.eof()) break;
+
+    while (true) {
+        bool eiluteBaigta = false;
+        while (!eiluteBaigta && is >> paz) {
+            if (paz < 1 || paz > 10) {
+                std::cerr << "Klaida: pazymys " << paz << " turi buti nuo 1 iki 10!\n";
+                // isvalome srauta, kad galima butu toliau skaityti
+                if (is.fail()) {
+                    is.clear();
+                    is.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                }
+                continue; // netinkamas pazymys praleidziamas
+            }
+            paz_.push_back(paz);
+            // patikriname ar eilute baigiasi
+            if (is.peek() == '\n' || is.eof()) {
+                eiluteBaigta = true;
+                break;
+            }
+        }
+
+        // jei srautas istringa del netinkamos ivesties, praleidziame likusia eilute
+        if (is.fail()) {
+            is.clear();
+            is.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+        break;
     }
 
     if (!paz_.empty()) {
@@ -74,7 +100,10 @@ std::istream& Studentas::skaitytiStudenta(std::istream& is) {
     return is;
 }
 
-// Vidurkio ir medianos skai?iavimas
+
+
+
+// Vidurkio ir medianos skaiciavimas
 float Studentas::skaiciuotiVidurki() const {
     if (paz_.empty()) return 0.0f;
     float suma = std::accumulate(paz_.begin(), paz_.end(), 0);
@@ -92,7 +121,7 @@ float Studentas::skaiciuotiMediana() const {
         return kopija[n / 2];
 }
 
-// Galutini? rezultat? apskai?iavimas su svoriais
+// Galutini rezultat apskaiciavimas su svoriais
 void Studentas::apskaiciuotiRezultatus() {
     rezVid_ = 0.4f * skaiciuotiVidurki() + 0.6f * egzas_;
     rezMed_ = 0.4f * skaiciuotiMediana() + 0.6f * egzas_;
@@ -104,12 +133,16 @@ std::istream& operator>>(std::istream& is, Studentas& s) {
 }
 
 std::ostream& operator<<(std::ostream& os, const Studentas& s) {
-    os << s.vard_ << " " << s.pav_ << " Egz: " << s.egzas_
-        << " Vid: " << s.rezVid_ << " Med: " << s.rezMed_
-        << " Pazymiai: ";
-    for (int p : s.paz_) os << p << " ";
+    os << s.vard_ << " " << s.pav_ << " ";        // vardas pavarde
+    os << "|Pazymiai: ";
+    for (int p : s.paz_) os << p << " ";         // namu darbu pazymiai
+    os << "|Egzamino pazymys: " << s.egzas_ << " ";
+    os << "|Galutinis (Vid.): " << s.rezVid_ << " ";
+    os << "|Galutinis (Med.): " << s.rezMed_;
     return os;
 }
+
+
 
 // Pagalbines funkcijos rikiavimui
 bool pagalVarda(const Studentas& a, const Studentas& b) {
