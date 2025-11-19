@@ -27,12 +27,13 @@ int main() {
         std::cout << "4 - Baigti programa\n";
         std::cout << "5 - Generuoti studentu failus (1k - 10mln)\n";
         std::cout << "6 - Testuoti konteinerius (vector vs list)\n";
+        std::cout << "7 - Testuoti Rule of Three ir operatorius\n";
         std::cout << "Jusu pasirinkimas yra: ";
         std::cin >> veiksmas;
 
         if (veiksmas == 1) {
             char tipas;
-            std::cout << "Naudoti konteiner?: vector (v) ar list (l)? ";
+            std::cout << "Naudoti konteineri: vector (v) ar list (l)? ";
             std::cin >> tipas;
 
             if (tipas != 'v' && tipas != 'l') {
@@ -40,10 +41,9 @@ int main() {
                 continue;
             }
 
-            Studentas s = ivesk();
-            if (s.vardas() == "0") continue; // nutraukimas
+            Studentas s = ivesk();  // funkcija naudoja ribojim? nuo 1-10 ir -1
+            if (s.vardas() == "0") continue;
 
-            // Automatiskai apskaiciuojame rezultatus per Studentas metodus
             s.apskaiciuotiRezultatus();
 
             if (tipas == 'v') GrupeVector.push_back(s);
@@ -75,19 +75,11 @@ int main() {
             }
         }
         else if (veiksmas == 3) {
-            if (!GrupeVector.empty()) {
-                spausdintiRezultatusIrRusiavima(GrupeVector);
-            }
-            else if (!GrupeList.empty()) {
-                spausdintiRezultatusIrRusiavima(GrupeList); // list palaikomas template funkcijoje
-            }
-            else {
-                std::cout << "Tuscias sarasas. Nera studentu.\n";
-            }
+            if (!GrupeVector.empty()) spausdintiRezultatusIrRusiavima(GrupeVector);
+            else if (!GrupeList.empty()) spausdintiRezultatusIrRusiavima(GrupeList);
+            else std::cout << "Tuscias sarasas. Nera studentu.\n";
         }
-        else if (veiksmas == 4) {
-            break;
-        }
+        else if (veiksmas == 4) break;
         else if (veiksmas == 5) {
             generuotiFaila(1000, "studentai_1000.txt");
             generuotiFaila(10000, "studentai_10000.txt");
@@ -103,6 +95,10 @@ int main() {
             testuotiKonteineri<std::vector<Studentas>>(testFailas, "std::vector");
             testuotiKonteineri<std::list<Studentas>>(testFailas, "std::list");
         }
+        else if (veiksmas == 7) {
+            testuotiRuleOfThreeIrOperatorius();
+        }
+           
         else {
             std::cerr << "Klaida: netinkamas meniu pasirinkimas!\n";
         }
