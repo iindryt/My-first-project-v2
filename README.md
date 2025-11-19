@@ -56,10 +56,10 @@
 
 
 Asmeniui leidžiama pasirinkti, kad būtų atliekamas testavimas (7)
-
-<img width="518" height="91" alt="image" src="https://github.com/user-attachments/assets/d2584195-95b4-4a62-b8f6-8d85a8e6703e" />
 Suvedus duomenis, atitinkamai įvykdoma ir parodoma, kad veikia tiek Rule of Three, tiek ir operatoriai:
-<img width="862" height="312" alt="image" src="https://github.com/user-attachments/assets/4b4455a0-b647-4b71-8521-f6c37aeda850" />
+<img width="1255" height="531" alt="image" src="https://github.com/user-attachments/assets/faa0443f-3fca-4c05-96df-a44b829395d9" />
+
+
 
 
 Kalbant apie realų pritaikymą programoje, išskirčiau vieną funkciją – nuksiatymą iš failo, nes
