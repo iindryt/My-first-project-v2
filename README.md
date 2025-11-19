@@ -62,6 +62,28 @@ Suvedus duomenis, atitinkamai įvykdoma ir parodoma, kad veikia tiek Rule of Thr
 <img width="862" height="312" alt="image" src="https://github.com/user-attachments/assets/4b4455a0-b647-4b71-8521-f6c37aeda850" />
 
 
+Kalbant apie realų pritaikymą programoje, išskirčiau vieną funkciją – nuksiatymą iš failo, nes
+Nuskaitant studentų įrašus iš failo, naudojamas perdengtas operatorius:
+iss >> s;
+Kadangi s yra Studentas, kviečiamas būtent:
+operator>>(std::istream&, Studentas&)
+
+Operatorius nėra naudojamas rankinėje įvestyje, programos rezultato išvedimas naudojamas rankiniu būdu, t.y., operatorius << Studentui nėra naudojamas bendrai rezultatų spausdinimo funkcijoje;
+
+## Perdengtų operatorių naudojimas programoje
+
+| Veiksmas / vieta programoje                     | Naudojamas operatorius | Ar tikras panaudojimas? | Aprašas / paskirtis |
+|-------------------------------------------------|----------------------|------------------------|--------------------|
+| Nuskaitant studentus iš failo (`iss >> s`)     | `operator>>`         | Taip                 | Įvedimas iš failo; leidžia naudoti tą patį formatą kaip cin |
+| Testavimo režimas (Meniu #7) – įvedimas       | `operator>>`         |  Taip                 | Įvedamas studentas konsolėje; demonstruoja Rule of Three |
+| Testavimo režimas (Meniu #7) – išvedimas      | `operator<<`         | Taip                 | Išvedamas studentas konsolėje; demonstruoja Rule of Three |
+| Rankinis įvedimas (funkcija `ivesk()`)         | –                    |  Ne                   | Duomenys įvedami per cin, operatorius `>>` Studentui nenaudojamas |
+| Rezultatų spausdinimas į ekraną / failą       | –                    | Ne                   | Duomenys išvedami atskirai: s.vardas(), s.pavarde(), s.getVid()/s.getMed(); operatorius `<<` Studentui nenaudojamas |
+
+
+
+
+
 
 # v1.1
 Versijoje v1.1 atlikta šie pakeitimai:
