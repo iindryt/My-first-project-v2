@@ -1,9 +1,25 @@
 #include "duomenys.h"
 #include "funkcijos.h"
+#include "studentas.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
 #include <iomanip>
+
+void testuotiRuleOfThreeIrOperatorius() {
+    Studentas original;
+    std::cout << "Iveskite studenta pagal originalius duomenis (pvz.: Jonas Jonaitis nd nd ... egz):\n";
+    std::cin >> original;
+
+    std::cout << "\nJus ivedete:\n" << original << std::endl;
+
+    Studentas kopija = original; // kopijavimo konstruktorius
+    std::cout << "\nKopijuotas studentas (kopijavimo konstruktorius):\n" << kopija << std::endl;
+
+    Studentas priskyrimas;
+    priskyrimas = original; // operator=
+    std::cout << "\nStudentas po priskyrimo (operator=):\n" << priskyrimas << std::endl;
+}
 
 // ============================
 //    NUSKAITYMAS IS FAILO
