@@ -12,6 +12,7 @@
 #include "laikmatis.h"
 #include "funkcijos.h"
 
+void testuotiRuleOfThreeIrOperatorius();
 // Failo generavimas
 void generuotiFaila(int kiekis, const std::string& failoVardas, int ndKiekis = 5);
 
@@ -31,7 +32,7 @@ Container nuskaitytiIsFailoTemplate(const std::string& failoVardas, bool spausdi
     }
 
     std::string eilute;
-    std::getline(in, eilute); 
+    std::getline(in, eilute);
 
     while (std::getline(in, eilute)) {
         if (eilute.empty()) continue;
@@ -39,7 +40,8 @@ Container nuskaitytiIsFailoTemplate(const std::string& failoVardas, bool spausdi
         std::istringstream iss(eilute);
 
         Studentas s;
-        s.skaitytiStudenta(iss);  // panaudojame vienoda skaitymo funkcija
+        //s.skaitytiStudenta(iss);
+        iss >> s;  //operator >>
         studentai.push_back(s);
     }
 
