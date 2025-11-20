@@ -1,4 +1,84 @@
 # Studentų pažymių valdymo programa 
+# v1.5
+
+# Abstrakti bazinė klasė `Zmogus` ir iš jos išvestinė klasė `Studentas`
+
+Pagal projekto reikalavimus programa turi naudoti dvi tarpusavyje susijusias klases:
+
+1. **Bazinę (abstrakčią) klasę `Zmogus`**, skirtą aprašyti bendrus žmogaus atributus.
+2. **Išvestinę (derived) klasę `Studentas`**, kuri paveldi bazinės klasės savybes ir realizuoja konkrečią logiką, reikalingą studentui aprašyti.
+
+Ši struktūra pakeičia ankstesnį variantą, kuriame buvo naudojama tik viena klasė.  
+Dabar programa remiasi objektiškai orientuota struktūra su paveldėjimu.
+
+---
+
+## Kodėl `Zmogus` turi būti abstrakti klasė?
+
+Klasė **Zmogus** apibrėžia bendrus duomenis:
+
+- `vardas`
+- `pavardė`
+
+Tačiau ji **neturi** konkrečios informacijos apie tai, kaip žmogaus duomenys turi būti nuskaityti ar išvedami.  
+Todėl bazinė klasė neįgyvendina šių operacijų – tik apibrėžia jų būtinybę.
+
+Tam naudojamos **grynai virtualios funkcijos**:
+
+```cpp
+virtual void skaitytiInfo(std::istream& is) = 0;
+virtual void spausdintiInfo(std::ostream& os) const = 0; 
+```
+
+
+Klasė Zmogus specialiai sukurta kaip abstrakti bazinė klasė, todėl jos objektų kurti negalima.
+Ji turi grynai virtualias funkcijas.
+Dėl šių funkcijų klasė tampa neimplementuota, todėl jeigu pabandome kode parašyti Zmogus z, gauname kompiliavimo klaidą:
+<img width="553" height="121" alt="image" src="https://github.com/user-attachments/assets/89cd05ab-9883-4b3b-902d-836ce38a56ad" />
+Tai įrodo, kad Bazinė klasė Zmogus tik apibrėžia bendrą formą, bet negali būti naudojama tiesiogiai.
+Tik išvestinės klasės, pvz. Studentas, gali būti kuriamos:
+Studentas s.
+
+## `Zmogus` ir `Studentas` klasių palyginimas
+
+| Savybė / Funkcionalumas          | Zmogus (bazinė klasė)                       | Studentas (išvestinė klasė)                          |
+|----------------------------------|----------------------------------------------|------------------------------------------------------|
+| Klasės tipas                     | Abstrakti bazinė klasė                       | Konkreti išvestinė klasė                             |
+| Ar galima sukurti objektą?      |  Ne                                         | Taip                                               |
+| Ar turi virtualų destruktorių?  |  Taip (virtualus)                           | Taip (override)                                    |
+| Ar turi grynai virtualias funkcijas? | Taip (`skaitytiInfo`, `spausdintiInfo`) | Ne (jos įgyvendinamos konkrečiai)                  |
+| Turi bendrus žmogaus duomenis   | (`vardas`, `pavardė`)                      | Paveldi (`vardas`, `pavardė`)                     |
+| Papildomi duomenys              | Nėra                                       | Pažymiai, egzaminas, galutiniai rezultatai         |
+| Atsakinga už įvesties/išvesties logiką |  Ne                                          |  Taip (realizuoja `skaitytiInfo`, `spausdintiInfo`) |
+| Paveldėjimas                    | Nėra – pati yra bazinė klasė                 |  Paveldi iš `Zmogus`                               |
+| Rule of Three                   |  Nebūtinas (nėra valdomų resursų)           | Realizuotas (kopijavimas, priskyrimas, destruktorius) |
+| Naudojama konteineriuose (`vector`, `list`) |  Ne (negali būti kuriama)                     | Taip, naudojama programoje                         |
+| Polimorfizmas                   | Užtikrina per virtualias funkcijas         | Naudoja – įgyvendina bazinės klasės sąsają         |
+| Paskirtis                       | Apibrėžti bendrą žmogaus „šabloną“           | Konkrečiai įgyvendinti studento logiką               |
+
+---
+
+Ši lentelė aiškiai parodo skirtumus tarp klasių ir padeda suprasti, kodėl paveldėjimas šiame projekte naudojamas teisingai ir tikslingai.
+
+Jei reikia — galiu pridėti dar vieną lentelę apie metodų paveldėjimą, UML diagramą arba skiltį apie polimorfizmo naudojimą projekte.
+
+
+### Kodėl Rule of Three nepanaikinamas?
+
+Paveldėjimas nekeičia fakto, kad išvestinės klasės:
+
+- gali turėti papildomų duomenų,
+- gali valdyti resursus,
+- gali būti kopijuojamos ir priskiriamos.
+
+Todėl Studentas:
+
+- paveldi vardą ir pavardę,
+- turi papildomus konteinerius,
+- gali būti kopijuojamas (pvz., dedant į `std::vector<Studentas>`).
+
+Dėl šių priežasčių, net ir naudojant abstrakčią bazinę klasę, **visos kopijavimo ir priskyrimo logikos atsakomybė išlieka Studentas klasėje**, ir Rule of Three vis dar taikomas.
+
 # v1.2
 
 Ši programa realizuoja `Studentas` klasę su visais būtinais metodais ir operatoriais pagal **Rule of Three** taisyklę. Projekto v1.2 tikslas – demonstruoti, kaip dirbti su klasėmis, operatoriais.
