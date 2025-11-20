@@ -60,8 +60,6 @@ Studentas s.
 
 Ši lentelė aiškiai parodo skirtumus tarp klasių ir padeda suprasti, kodėl paveldėjimas šiame projekte naudojamas teisingai ir tikslingai.
 
-Jei reikia — galiu pridėti dar vieną lentelę apie metodų paveldėjimą, UML diagramą arba skiltį apie polimorfizmo naudojimą projekte.
-
 
 ### Kodėl Rule of Three nepanaikinamas?
 
