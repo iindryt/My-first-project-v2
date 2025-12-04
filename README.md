@@ -1,4 +1,34 @@
 # Studentų pažymių valdymo programa 
+# v2.0
+
+
+
+# Studentas klasės testavimas (GoogleTest)
+Šiame projekte naudojami GoogleTest testai, skirti patikrinti Studentas klasės funkcionalumą. Testai apima vidurkio skaičiavimą, kopijavimo konstruktorių ir priskyrimo operatorių. 
+**Vidurkio skaiciavimo testas**
+Šis testas tikrina, ar skaiciuotiVidurki() metodas teisingai apskaičiuoja namų darbų pažymių vidurkį.
+Testo logika:
+Sukuriamas studentas su pažymiais { 6, 8, 10 }.
+Apskaičiuojamas vidurkis pagal formulę (6 + 8 + 10) / 3.
+Patikrinama, ar metodo grąžinta reikšmė sutampa su laukiamu rezultatu.
+Tai užtikrina, kad vidurkio skaičiavimo logika veikia korektiškai.
+**Kopijavimo konstruktoriaus testas**
+Šio testo tikslas — patikrinti, ar kopijavimo konstruktorius tinkamai sukuria naują objekto kopiją.
+Testas tikrina:
+Ar nukopijuojami namų darbų pažymiai.
+Ar nukopijuojamas egzamino pažymys.
+Ar teisingai perkeliamos jau apskaičiuotos vidurkio ir medianos reikšmės.
+Jeigu visi laukai sutampa, laikoma, kad kopijavimo konstruktorius įgyvendintas teisingai.
+**Priskyrimo operatoriaus testas**
+Šis testas patikrina **operator=** veikimą, t. y. ar vienam Studentas` objektui priskyrus kitą, visi duomenys yra teisingai perkopijuojami.
+Testas tikrina:
+Pažymių vektoriaus tapatumą.
+Egzamino pažymio perkopijavimą.
+Vidurkio ir medianos reikšmių perkėlimą.
+Sėkmingas testo įvykdymas užtikrina, kad priskyrimo operatorius tvarkingai perkelia visus objekto duomenis.
+<img width="933" height="312" alt="image" src="https://github.com/user-attachments/assets/6b25657d-d1b4-49fb-9b16-db10b40c68ab" />
+
+
 # v1.5
 
 # Abstrakti bazinė klasė `Zmogus` ir iš jos išvestinė klasė `Studentas`
