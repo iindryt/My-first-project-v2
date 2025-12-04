@@ -127,7 +127,7 @@ Sėkmingas testo įvykdymas užtikrina, kad priskyrimo operatorius tvarkingai pe
 
 Prieš pradedant 
 
-Atsisiųsti CMakeLists.txt, run.bat, .cpp ir .h failus iš GitHub.
+Atsisiųsti CMakeLists.txt, run.bat, .cpp ir .h (be test.cpp) failus iš GitHub.
 
 Kompiuteryje sukurti aplanką pavadintą "cmaketest". Į jį įkelti CMakeLists.txt, run.bat, cmake.exe failus.
 
