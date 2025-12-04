@@ -7,7 +7,7 @@
  * @brief Bazine klase zmogui, sauganti varda ir pavarde.
  *
  * Si klase yra abstrakti ir naudojama kaip pagrindas kitoms klasems,
- * pvz., Studentas ar Destytojas. Reikalauja implementuoti skaitymo ir
+ * pvz., Studentas. Reikalauja implementuoti skaitymo ir
  * spausdinimo funkcijas.
  */
 class Zmogus {
