@@ -122,6 +122,117 @@ Sėkmingas testo įvykdymas užtikrina, kad priskyrimo operatorius tvarkingai pe
 
 ![Testų rezultatas](https://github.com/user-attachments/assets/6b25657d-d1b4-49fb-9b16-db10b40c68ab)
 
+## Įdiegimo instrukcija
+# CMake įdiegimas Windows naudojant `.msi` paketą
+
+Prieš pradedant 
+
+Atsisiųsti CMakeLists.txt, run.bat, .cpp ir .h failus iš GitHub.
+
+Kompiuteryje sukurti aplanką pavadintą "cmaketest". Į jį įkelti CMakeLists.txt, run.bat, cmake.exe failus.
+
+"cmaketest" aplanke sukurti du aplankus: "src", "include". Į "src" aplanką įkelti .cpp failus, o į "include" - .h failus.
+
+## 1. Atsisiuntimas
+1. Eikite į oficialų CMake puslapį: [https://cmake.org/download/](https://cmake.org/download/)
+2. Pasirinkite **Windows x64 Installer (.msi)** versiją.
+   - Pavyzdys: `cmake-3.25.0-windows-x86_64.msi`
+
+## 2. Diegimas
+1. Paleiskite atsisiųstą `.msi` failą.
+2. Spauskite **Next** visuose langeliuose.
+3. Svarbu: pasirinkite **"Add CMake to the system PATH for all users"** arba **"for current user"**.  
+   - Tai leis naudoti `cmake` komandą bet kuriame terminale.
+
+## 3. Baigimas
+1. Spauskite **Finish**, kai diegimas baigtas.
+2. Atidarykite naują **PowerShell** langą.
+3. Patikrinkite diegimą įvedę:
+   ```powershell
+   cmake --version
+
+# CMake projekto paleidimas Windows PowerShell
+---
+
+## 1. Atidarykite PowerShell
+
+- Atidarykite **Windows PowerShell**.
+2. **Eikite į savo projekto katalogą, pavyzdžiui:**
+- cd C:\Users\aiste\Desktop\cmaketest
+- 
+3. **Paleiskite CMake projektą:**
+
+cmake .\CMakeLists.txt
+
+4. **Sukurkite projektą:**
+
+cmake --build .
+
+5. **Pereikite į Debug katalogą:**
+
+cd Debug
+
+6. **Paleiskite programą:**
+
+.\Studentu_programa.exe
+
+7. **Terminale matysite programos meniu:**
+
+Pasirinkite veiksma:
+1 - Prideti studenta rankiniu budu
+2 - Nuskaityti studentus is failo
+3 - Rodyti studentu rezultatus
+4 - Baigti programa
+5 - Generuoti studentu failus (1k - 10mln)
+6 - Testuoti konteinerius (vector vs list)
+7 - Testavimas Rule of Three ir operatoriu
+Jusu pasirinkimas yra:
+
+
+
+---
+## Naudojimosi instrukcija
+
+Programa veikia meniu principu ir leidžia valdyti studentų pažymius.
+
+## Paleidimas
+
+- Linux/MacOS: `./studentai`  
+- Windows: `studentai.exe`
+
+## Pagrindinis meniu
+
+Pasirinkite veiksmą:
+
+1. **Pridėti studentą rankiniu būdu**  
+   - Įveskite vardą, pavardę, namų darbų ir egzamino pažymius (arba generuokite atsitiktinius).
+
+2. **Nuskaityti studentus iš failo**  
+   - Failas turi turėti antraštę: `Vardas Pavarde ND1 ND2 ... Egzaminas`.
+
+3. **Rodyti studentų rezultatus**  
+   - Pasirinkite galutinio balo skaičiavimo metodą: Vidurkis / Mediana / Abu.  
+   - Rezultatai išsaugomi `rezultatai.txt`.  
+   - Galima skirstyti studentus į:  
+     - **Kietiakiai** (≥5) – `kietiakiai.txt`  
+     - **Vargsiukai** (<5) – `vargsiukai.txt`
+
+4. **Baigti programą**  
+
+5. **Generuoti studentų failus (1k–10 mln)**  
+   - Sukuria atsitiktinius studentų duomenų failus testavimui.
+
+6. **Testuoti konteinerius (vector vs list)**  
+   - Atliekami našumo testai nuskaitymui, rūšiavimui ir įrašymui.
+
+7. **Testavimas Rule of Three ir operatoriu**  
+   - Atliekamas Rule of Three ir operatoriu testas.
+
+**Jūsų pasirinkimas yra:**
+
+
+
+
 
 
 # v1.5
