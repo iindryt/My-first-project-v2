@@ -1,6 +1,76 @@
 # Studentų pažymių valdymo programa 
 # v2.0
 
+# Studentas ir Zmogus klasės (Doxygen dokumentacija)
+
+Šiame projekte naudojamos dvi pagrindinės klasės:
+
+- `Zmogus` – bazinė abstrakti klasė žmogui, sauganti vardą ir pavardę.
+- `Studentas` – paveldi `Zmogus` klasę, reprezentuoja studentą su pažymiais, egzaminu ir galutiniais rezultatais.
+
+---
+
+## Zmogus klasė
+
+**Trumpas aprašymas:**  
+Bazė žmogui, sauganti vardą ir pavardę. Tai abstrakti klasė, iš kurios paveldi kitos klasės, pvz., `Studentas`.
+
+**Pagrindinės savybės:**
+- `vard_` – žmogaus vardas.
+- `pav_` – žmogaus pavardė.
+
+**Svarbiausios funkcijos:**
+- Konstruktoriai su vardu ir pavarde arba numatytasis konstruktorius.
+- Virtualus destruktorius, užtikrinantis teisingą paveldėtų klasių atminties valdymą.
+- `vardas()` ir `pavarde()` – grąžina vardą ir pavardę.
+- Abstraktūs metodai:
+  - `skaitytiInfo(std::istream&)` – įvesti žmogaus informaciją.
+  - `spausdintiInfo(std::ostream&)` – išvesti žmogaus informaciją.
+
+**Pastaba:**  
+Kadangi klasė yra abstrakti, tiesiogiai `Zmogus` objektų kurti negalima.
+
+---
+
+## Studentas klasė
+
+**Trumpas aprašymas:**  
+Paveldi iš `Zmogus`, reprezentuoja studentą su pažymiais, egzamino rezultatu ir galutiniais rezultatais.  
+
+**Pagrindinės savybės:**
+- `paz_` – namų darbų pažymių vektorius.
+- `egzas_` – egzamino pažymys.
+- `rezVid_` – galutinis rezultatas pagal vidurkį.
+- `rezMed_` – galutinis rezultatas pagal mediana.
+
+**Svarbiausios funkcijos:**
+- Konstruktoriai:
+  - Numatytoji versija.
+  - Su duomenimis (vardas, pavardė, egzaminas, namų darbų pažymiai).
+  - Iš srauto (`std::istream`).
+- Kopijavimo konstruktorius ir priskyrimo operatorius.
+- Destruktorius.
+- `pazymiai()` – grąžina pažymių vektorių.
+- `egzaminas()` – grąžina egzamino pažymį.
+- `getVid()` – grąžina galutinį rezultatą pagal vidurkį.
+- `getMed()` – grąžina galutinį rezultatą pagal medianą.
+- `skaitytiStudenta(std::istream&)` – skaito studento duomenis iš srauto.
+- Polimorfiniai metodai:
+  - `skaitytiInfo(std::istream&)` – skaito bendrą informaciją.
+  - `spausdintiInfo(std::ostream&)` – spausdina studento informaciją.
+- Skaičiavimo metodai:
+  - `skaiciuotiVidurki()` – apskaičiuoja vidurkį.
+  - `skaiciuotiMediana()` – apskaičiuoja medianą.
+  - `apskaiciuotiRezultatus()` – apskaičiuoja galutinius rezultatus.
+- Operatoriai:
+  - `operator>>` – įvesties operatorius.
+  - `operator<<` – išvesties operatorius.
+
+**Papildomos funkcijos:**
+- `pagalVarda`, `pagalPavarde`, `pagalGalutini` – funkcijos, skirtos studentų rikiavimui pagal vardą, pavardę arba galutinį rezultatą.
+
+---
+
 
 # Studentas klasės testavimas (GoogleTest)
 
